@@ -1,0 +1,50 @@
+label {
+  font-size: 14px;
+  color: black;
+}
+
+.dropdown-padding {
+    padding-left: 10px;
+  }
+
+.scrollable-menu {
+  max-height: 25vh;
+  overflow-y: auto;
+}
+
+.filter-menu{
+  height: 24px;
+}
+
+.chart-area{
+  height: 15rem
+}
+
+@media (min-width: 768px) {
+  .chart-area {
+      height: 25rem;
+  }
+}
+
+#comparison-days{
+  width: 70px;
+}
+
+.task-list {
+  list-style-type: none; 
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.task-list li {
+  padding: 0.6rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.task-list li:last-child {
+  border-bottom: none;
+}
+
+.task-list li:hover {
+  background-color: #f6f6f6;
+}

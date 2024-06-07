@@ -1,0 +1,17 @@
+{
+  "name": "chartjs-example",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "devDependencies": {
+    "parcel": "^2.6.2"
+  },
+  "dependencies": {
+    "chart.js": "^4.0.0",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "date-fns": "^3.6.0"
+  }
+}

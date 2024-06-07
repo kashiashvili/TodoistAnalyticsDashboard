@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>Todoist Analytics Dashboard</title>
+  <meta name="description"
+    content="Todoist task completion analytics, Todoist productivity dashboard, Todoist KPI dashboard, Todoist data insights">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+  <link rel="stylesheet" href="assets/css/bs-theme-overrides.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/date-fns@3.6.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@2.0.1"></script>
+</head>
+
+<body id="page-top">
+  <div id="wrapper">
+    <div class="d-flex flex-column" id="content-wrapper">
+      <div id="content" style="border-color: var(--bs-btn-color);">
+        <header>
+          <nav class="navbar navbar-expand bg-white shadow mb-4 topbar">
+            <div class="container-fluid">
+              <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
+                <h3 class="text-dark mb-0"><strong><span style="color: rgb(211, 48, 25);">Todoist Analytics
+                      Dashboard</span></strong></h3>
+              </form><a class="btn btn-secondary d-inline d-sm-inline-block file-upload" role="button"
+                href="https://darekkay.com/todoist-export/" style="margin-right: 10px;" target="_blank"><i
+                  class="fas fa-download fa-sm text-white-50"></i>&nbsp;Export Data</a>
+
+              <input style="display: none;" type="file" id="data" name="data">
+              <label for="data" class="btn btn-primary d-inline d-sm-inline-block">
+                <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Import Data
+              </label>
+            </div>
+          </nav>
+        </header>
+        <main>
+
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-12 col-xl-12">
+                <div class="card shadow mb-4">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="col">
+                      <div class="row gy-2 justify-content-evenly">
+                        <div class="col-auto align-self-center">
+                          <h5 class="text-primary fw-bold m-0">Tasks Completed&nbsp;</h5>
+                        </div>
+                        <div class="col-auto align-self-center">
+                          <label for="start-date">Start Date</label>
+                          <input type="date" id="start-date" class="filter-menu">
+                        </div>
+                        <div class="col-auto align-self-center">
+                          <label for="end-date">End Date</label>
+                          <input type="date" id="end-date" class="filter-menu">
+                        </div>
+                        <div class="col-auto align-self-center">
+                          <div class="dropdown "><button class="btn btn-light btn-sm dropdown-toggle"
+                              aria-expanded="false" data-bs-toggle="dropdown" type="button">Projects</button>
+                            <ul id="project-filter" class="dropdown-menu dropdown-padding scrollable-menu"
+                              aria-labelledby="dropdownMenuButton">
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="col-auto offset-xl-0 align-self-center">
+                          <div class="dropdown"><button class="btn btn-light btn-sm dropdown-toggle multiselect"
+                              aria-expanded="false" data-bs-toggle="dropdown" type="button">Tags</button>
+                            <ul id="label-filter" class="dropdown-menu dropdown-padding scrollable-menu"
+                              aria-labelledby="dropdownMenuButton">
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="col-auto align-self-center">
+                          <div class="dropdown">
+                            <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
+                              data-bs-toggle="dropdown" aria-expanded="false">
+                              Priorities
+                            </button>
+                            <ul class="dropdown-menu dropdown-padding" aria-labelledby="dropdownMenuButton"
+                              id="priority-filter">
+                              <li>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="4" id="priority1">
+                                  <label class="form-check-label" for="priority1">
+                                    P1
+                                  </label>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="3" id="priority2">
+                                  <label class="form-check-label" for="priority2">
+                                    P2
+                                  </label>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="2" id="priority3">
+                                  <label class="form-check-label" for="priority3">
+                                    P3
+                                  </label>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="1" id="priority4">
+                                  <label class="form-check-label" for="priority4">
+                                    P4
+                                  </label>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="col-auto offset-lg-0 offset-xl-0 align-self-center">
+                          <div class="dropdown"><button class="btn btn-light btn-sm dropdown-toggle"
+                              aria-expanded="false" data-bs-toggle="dropdown" type="button">Group By</button>
+                            <div class="dropdown-menu" id="group-by">
+                              <button class="dropdown-item" value="day">Day</button>
+                              <button class="dropdown-item" value="week">Week</button>
+                              <button class="dropdown-item" value="year">Year</button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-auto col-sm-6 col-xl-1 align-self-center"><button class="btn btn-primary btn-sm"
+                            type="button" id="filter-button">Filter</button></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="chart-area"><canvas id="completed-tasks-chart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-7 col-xl-6">
+                <div class="card shadow mb-4">
+                  <div class="card-header">
+                    <h5 class="text-primary fw-bold m-0">Activity By Weekdays&nbsp;</h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="chart-area">
+                      <canvas id="activity-by-weekdays-chart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card shadow mb-4">
+                  <div class="card-header">
+                    <h5 class="text-primary fw-bold m-0">Oldest Uncompleted Tasks&nbsp;</h5>
+                  </div>
+                  <div class="card-body">
+                    <ul id="oldest-uncompleted-tasks" class="task-list">
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12 col-xl-12">
+                <div class="card shadow mb-4">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="col">
+                      <div class="row gy-2 justify-content-evenly">
+                        <div class="col-auto align-self-center">
+                          <h5 class="text-primary fw-bold m-0">Task Completion Comparison&nbsp;</h5>
+                        </div>
+                        <div class="col-auto align-self-center">
+                          <label for="first-start-date">First Start Date</label>
+                          <input type="date" id="first-start-date" class="filter-menu">
+                        </div>
+                        <div class="col-auto align-self-center">
+                          <label for="second-start-date">Second Start Date</label>
+                          <input type="date" id="second-start-date" class="filter-menu">
+                        </div>
+                        <div class="col-auto offset-lg-0 offset-xl-0 align-self-center">
+                          <label for="comparison-days">Days</label>
+                          </h5><input type="number" id="comparison-days" min="1" value="7" class="filter-menu">
+                        </div>
+                        <div class="col-auto col-sm-6 col-xl-1 align-self-center">
+                          <button class="btn btn-primary btn-sm" type="button" id="comparison-button">Compare</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="chart-area">
+                      <canvas id="comparison-chart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-7 col-xl-10">
+                <div class="card shadow mb-4">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="col align-self-center justify-content-between">
+                      <div class="row gy-2 align-items-center">
+                        <div class="col text-start">
+                          <h5 class="text-primary fw-bold m-0">Recurring Tasks Calendar&nbsp;</h5>
+                        </div>
+                        <div class="col text-end">
+                          <div class="dropdown"><button class="btn btn-primary btn-sm dropdown-toggle"
+                              aria-expanded="false" data-bs-toggle="dropdown" type="button">Choose Task</button>
+                            <div class="dropdown-menu scrollable-menu" id="recurring-tasks">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div>
+                      <canvas id="calendar-chart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-5 col-xl-2">
+                <div class="card shadow mb-4">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="text-primary fw-bold m-0">Completion Rate&nbsp;</h5>
+                    <i class="fas fa-exclamation-circle" data-bs-toggle="tooltip"
+                      title="This chart calculates % for tasks that recur daily. Otherwise the chart shows 0% completed."></i>
+                  </div>
+                  <div class="card-body">
+                    <div>
+                      <canvas id="completion-rate-chart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+      </div>
+      <footer class="bg-white sticky-footer">
+        <div class="container my-auto">
+          <div class="row">
+            <div class="col copyright text-center my-auto">
+              <span>
+                <a href="https://github.com/yourusername" class="text-dark">
+                  <i class="fab fa-github fa-4x"></i>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
